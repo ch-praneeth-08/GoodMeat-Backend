@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 5000;
 // Allow local and deployed frontend origins
 const allowedOrigins = [
   'http://localhost:5173',                     // Local React dev server
-  'https://goodmeat.vercel.app/'           // ✅ Replace with your actual Vercel domain
+  'https://good-meat-frontend.vercel.app',     // Deployed frontend
 ];
 
 app.use(cors({
