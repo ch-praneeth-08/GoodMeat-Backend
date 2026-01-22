@@ -70,7 +70,7 @@ npm start
 
 For development with auto-reload:
 ```bash
-npx nodemon server.js
+npm run dev
 ```
 
 ## API Endpoints
