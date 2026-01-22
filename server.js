@@ -53,7 +53,17 @@ connection.once('open', () => {
   logger.info('MongoDB database connection established successfully!');
 });
 
-// --- 4. API ROUTES ---
+// --- 4. HEALTH CHECK ENDPOINT ---
+
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'OK', 
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
+
+// --- 5. API ROUTES ---
 
 const authRouter = require('./routes/auth');
 const productsRouter = require('./routes/products');
@@ -67,7 +77,7 @@ app.use('/categories', categoriesRouter);
 app.use('/subcategories', subcategoriesRouter);
 app.use('/upload', uploadRouter);
 
-// --- 5. START SERVER ---
+// --- 6. START SERVER ---
 
 app.listen(PORT, () => {
   logger.info(`Server starting on port ${PORT}`);
