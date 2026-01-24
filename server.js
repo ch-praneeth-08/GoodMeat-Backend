@@ -15,17 +15,29 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
   'http://localhost:5173',                     // Local React dev server
   'http://localhost:3000',                     // Alternative local port
-  'https://good-meat-frontend.vercel.app',     // Deployed frontend
+  'https://good-meat-frontend.vercel.app',     // Deployed frontend (main)
+  'https://good-meat-frontend-git-main-praneeths-projects-22d4c585.vercel.app', // Vercel preview URL
   process.env.FRONTEND_URL                     // Environment-specific frontend URL
 ].filter(Boolean);
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Allow if in allowedOrigins list
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
     }
+    
+    // Allow any Vercel deployment URL that matches the pattern
+    if (origin.includes('vercel.app') && origin.includes('good-meat')) {
+      return callback(null, true);
+    }
+    
+    // Reject others
+    logger.warn(`CORS blocked origin: ${origin}`);
+    callback(new Error('Not allowed by CORS'));
   },
   credentials: true
 }));
